@@ -33,6 +33,7 @@ function subPos(pos1, pos2) {
     return [pos1[0] - pos2[0], pos1[1] - pos2[1]];
 }
 
+// array of connections in each grid cell
 // indexed by gridConnections[cellY][cellX][inputIdx][outputIdx]
 let gridConnections = 
     Array.from({ length: size }, () =>
@@ -42,6 +43,15 @@ let gridConnections =
             )
         )
     );
+
+
+function gridIdToCoord(id) {
+    return [id%size, Math.floor(id/size)];
+}
+
+function coordToGridId(coord) {
+    return coord[1] * size + coord[0];
+}
 
 function resetGrid() {
     container.innerHTML = "";
@@ -54,10 +64,10 @@ function resetGrid() {
 
             div.addEventListener("mouseover",()=> onMouseOver(div));
             div.addEventListener("mousedown",()=> onMouseDown(div));
-            div.id = y * size + x;
+            div.id = "b" + coordToGridId([x, y]);
 
             let connectionArr = [
-                [1,0,0,0],
+                [0,0,0,0],
                 [0,0,0,0],
                 [0,0,0,0],
                 [0,0,0,0]
@@ -72,18 +82,17 @@ function resetGrid() {
 
 resetGrid();
 
-function gridIdToCoord(id) {
-    return [id%size, Math.floor(id/size)];
-}
+
 
 
 function onMouseOver(div) {
     if(!draw) return;
     div.style.backgroundColor = color.value;
 
-    let currentGrid = gridIdToCoord(div.id);
+    let currentGrid = gridIdToCoord(div.id.slice(1)); //trim the first character of the box's id. b123 -> 123
     if(currentGrid[0] == prevGrid[0] && currentGrid[1] == prevGrid[1]) return;
 
+    console.log(currentGrid,prevGrid, prevPrevGrid);
     if(prevPrevGrid != null && prevGrid != null) {
         
         let entryDiff = subPos(prevPrevGrid, prevGrid);
@@ -95,6 +104,11 @@ function onMouseOver(div) {
         if (entryDir == -1 || exitDir == -1) return;
         
         console.log("connect (" + prevGrid + ") " + "NESW"[entryDir] + " to " + "NESW"[exitDir]);
+
+        gridConnections[prevGrid[1]][prevGrid[0]][entryDir][exitDir] = 1; //make connection
+        //redraw grid cell
+        let div = document.querySelector("div#b" + coordToGridId(prevGrid));
+        div.innerHTML = makeLinesSVG(gridConnections[prevGrid[1]][prevGrid[0]], prevGrid[1] == size - 1, prevGrid[0] == size - 1);
     }
 
     prevPrevGrid = prevGrid;
@@ -105,7 +119,7 @@ function onMouseDown(div) {
     div.style.backgroundColor = color.value;
 
     prevPrevGrid = null;
-    prevGrid = gridIdToCoord(div.id);
+    prevGrid = gridIdToCoord(div.id.slice(1));
 }
 
 window.addEventListener("mousedown", function() {

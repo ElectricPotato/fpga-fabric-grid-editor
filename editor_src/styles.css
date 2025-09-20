@@ -46,8 +46,8 @@ body {
     display: grid;
     grid-template-columns: repeat(var(--size), 0fr);
     grid-template-rows: repeat(var(--size), 0fr);
-    /*gap: 3px;
-    padding: 3px;*/
+    gap: 3px;
+    /*padding: 3px;*/
 }
 
 
