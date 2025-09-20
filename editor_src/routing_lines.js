@@ -20,7 +20,7 @@ function makeLine(startPos, endPos) {
 
 /**
  * Create an <svg> tag containing the lines representing the connections in a block
- * @param {Boolean[][]} connectionArr - connection matrix of inputs to output
+ * @param {Boolean[][]} connectionArr - connection matrix of inputs to output, indexed by connectionArr[inputIdx][outputIdx]
  * @param {Boolean} southEdge - if to render the connections with 
  * @param {Boolean} eastEdge
  **/
