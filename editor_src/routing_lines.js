@@ -10,12 +10,12 @@ const dirWest  = 3;
  * @param {Number[]} endPos - End position as a 2 number array [x, y]
  * @returns {string}
  **/
-function makeLine(startPos, endPos) {
+function makeLine(startPos, endPos, style = "stroke:red;stroke-width:2") {
     return '<line x1="' + startPos[0]
             + '%" y1="' + startPos[1]
             + '%" x2="' + endPos[0]
             + '%" y2="' + endPos[1]
-            + '%" style="stroke:red;stroke-width:2" />';
+            + '%" style="' + style + '" />';
 }
 
 /**
@@ -33,6 +33,9 @@ export function makeLinesSVG(connectionArr, southEdge = false, eastEdge = false)
 
     let neighbourCellOutPositions = [[100 - connX, -connY], [100 + connY, 100 - connX], [connX, 100 + connY], [-connY, connX]];
     let neighbourCellInPositions = [[connX, -connY], [100 + connY, connX], [100 - connX, 100 + connY], [-connY, 100 - connX]];
+
+    let lineEnableStyle = "stroke:red;stroke-width:4";
+    let lineDisabledStyle = "stroke:gray;stroke-width:1";
     
 
     let svgContents = '';
@@ -40,9 +43,10 @@ export function makeLinesSVG(connectionArr, southEdge = false, eastEdge = false)
     //internal connections
     for (let cellInIdx = 0; cellInIdx < 4; cellInIdx++) {
         for (let cellOutIdx = 0; cellOutIdx < 4; cellOutIdx++) {
-            if(!connectionArr[cellInIdx][cellOutIdx]) continue;
-
-            svgContents += makeLine(cellInPositions[cellInIdx], cellOutPositions[cellOutIdx]);
+            svgContents += makeLine(
+                cellInPositions[cellInIdx], cellOutPositions[cellOutIdx],
+                connectionArr[cellInIdx][cellOutIdx] ? lineEnableStyle : lineDisabledStyle
+            );
         }
     }
 
@@ -56,9 +60,11 @@ export function makeLinesSVG(connectionArr, southEdge = false, eastEdge = false)
         for (let cellOutIdx = 0; cellOutIdx < 4; cellOutIdx++) {
             used |= connectionArr[cellInIdx][cellOutIdx];
         }
-        if(!used) {continue;}
 
-        svgContents += makeLine(cellInPositions[cellInIdx], neighbourCellOutPositions[cellInIdx]);
+        svgContents += makeLine(
+            cellInPositions[cellInIdx], neighbourCellOutPositions[cellInIdx],
+            used ? lineEnableStyle : lineDisabledStyle
+        );
     }
 
     //current cell output to neighbour input connections
@@ -71,9 +77,11 @@ export function makeLinesSVG(connectionArr, southEdge = false, eastEdge = false)
         for (let cellInIdx = 0; cellInIdx < 4; cellInIdx++) {
             used |= connectionArr[cellInIdx][cellOutIdx];
         }
-        if(!used) {continue;}
-
-        svgContents += makeLine(cellOutPositions[cellOutIdx], neighbourCellInPositions[cellOutIdx]);
+        
+        svgContents += makeLine(
+            cellOutPositions[cellOutIdx], neighbourCellInPositions[cellOutIdx],
+            used ? lineEnableStyle : lineDisabledStyle
+        );
     }
 
     return '<svg style="position: relative; z-index: 1000;">' + svgContents + '</svg>';
