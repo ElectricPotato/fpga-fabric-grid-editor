@@ -15,17 +15,28 @@ function resetGrid() {
     container.innerHTML = "";
 
     container.style.setProperty("--size", size);
-    for(let i=0;i<size*size;i++){
-        const div = document.createElement("div");
-        div.classList.add("box");
+    for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+            const div = document.createElement("div");
+            div.classList.add("box");
 
-        div.addEventListener("mouseover",()=> onMouseOver(div));
-        div.addEventListener("mousedown",()=> onMouseDown(div));
-        div.id = i;
+            div.addEventListener("mouseover",()=> onMouseOver(div));
+            div.addEventListener("mousedown",()=> onMouseDown(div));
+            div.id = y * size + x;
 
-        div.innerHTML = makeLinesSVG();
+            let connectionArr = [
+                [1,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0]
+            ];
 
-        container.appendChild(div);
+            div.innerHTML = makeLinesSVG(connectionArr, false, false);
+            //div.innerHTML = makeLinesSVG(connectionArr, y == size - 1, x == size - 1);
+            //console.log(x,y,y == size - 1, x == size - 1)
+
+            container.appendChild(div);
+        }
     }
 }
 

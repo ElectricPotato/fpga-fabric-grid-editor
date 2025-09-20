@@ -1,5 +1,16 @@
 
-export function makeLinesSVG() {
+const dirNorth = 0;
+const dirEast  = 1;
+const dirSouth = 2;
+const dirWest  = 3;
+
+/**
+ * Create an <svg> tag containing the lines representing the connections in a block
+ * @param {Boolean[][]} connectionArr - connection matrix of inputs to output
+ * @param {Boolean} southEdge - if to render the connections with 
+ * @param {Boolean} eastEdge
+ **/
+export function makeLinesSVG(connectionArr, southEdge = false, eastEdge = false) {
     let connY = 10; //how much the connections should be offset from the bottom edge of the cell to the centre
     let connX = 30; //how much the connections should be offset from the side edge of the cell to the centre
     //coordinates of the inputs and outputs to each cell
@@ -16,7 +27,7 @@ export function makeLinesSVG() {
     for (let cell_in_idx = 0; cell_in_idx < 4; cell_in_idx++) {
         for (let cell_out_idx = 0; cell_out_idx < 4; cell_out_idx++) {
 
-            if (Math.floor(Math.random() * 2) == 0) continue;
+            if(!connectionArr[cell_in_idx][cell_out_idx]) continue;
 
             let line_str = '<line x1="' + cell_in_positions[cell_in_idx][0]
             + '%" y1="' + cell_in_positions[cell_in_idx][1]
@@ -28,27 +39,43 @@ export function makeLinesSVG() {
         }
     }
 
-    //input connections
-    for (let i = 0; i < 4; i++) {
-        if (Math.floor(Math.random() * 2) == 0) continue;
+    //current cell input to neighbour output connections
+    for (let cell_in_idx = 0; cell_in_idx < 4; cell_in_idx++) {
+        if((!eastEdge & (cell_in_idx == dirEast))
+            | (!southEdge & (cell_in_idx == dirSouth))) {continue;}
 
-        let line_str = '<line x1="' + cell_in_positions[i][0]
-        + '%" y1="' + cell_in_positions[i][1]
-        + '%" x2="' + neighbour_cell_out_positions[i][0]
-        + '%" y2="' + neighbour_cell_out_positions[i][1]
+        //check if cell input is being used
+        let used = false;
+        for (let cell_out_idx = 0; cell_out_idx < 4; cell_out_idx++) {
+            used |= connectionArr[cell_in_idx][cell_out_idx];
+        }
+        if(!used) {continue;}
+
+        let line_str = '<line x1="' + cell_in_positions[cell_in_idx][0]
+        + '%" y1="' + cell_in_positions[cell_in_idx][1]
+        + '%" x2="' + neighbour_cell_out_positions[cell_in_idx][0]
+        + '%" y2="' + neighbour_cell_out_positions[cell_in_idx][1]
         + '%" style="stroke:red;stroke-width:2;" />';
 
         svg_contents += line_str;
     }
 
-    //output connections
-    for (let i = 0; i < 4; i++) {
-        if (Math.floor(Math.random() * 2) == 0) continue;
+    //current cell output to neighbour input connections
+    for (let cell_out_idx = 0; cell_out_idx < 4; cell_out_idx++) {
+        if((!eastEdge & (cell_out_idx == dirEast))
+            | (!southEdge & (cell_out_idx == dirSouth))) {continue;}
+        
+        //check if cell input is being used
+        let used = false;
+        for (let cell_in_idx = 0; cell_in_idx < 4; cell_in_idx++) {
+            used |= connectionArr[cell_in_idx][cell_out_idx];
+        }
+        if(!used) {continue;}
 
-        let line_str = '<line x1="' + cell_out_positions[i][0]
-        + '%" y1="' + cell_out_positions[i][1]
-        + '%" x2="' + neighbour_cell_in_positions[i][0]
-        + '%" y2="' + neighbour_cell_in_positions[i][1]
+        let line_str = '<line x1="' + cell_out_positions[cell_out_idx][0]
+        + '%" y1="' + cell_out_positions[cell_out_idx][1]
+        + '%" x2="' + neighbour_cell_in_positions[cell_out_idx][0]
+        + '%" y2="' + neighbour_cell_in_positions[cell_out_idx][1]
         + '%" style="stroke:red;stroke-width:2;" />';
 
         svg_contents += line_str;
