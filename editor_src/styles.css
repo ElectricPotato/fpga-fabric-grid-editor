@@ -1,7 +1,8 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    /*box-sizing: border-box;
+    z-index: 0;*/
 }
 
 /*
@@ -53,5 +54,10 @@ body {
 .box {
     background-color: #393939;
     /*border-radius: 2px;*/
+}
+
+svg {
+    overflow: visible; /*make routing lines show across borders of cells*/
+    z-index: 3;
 }
 
