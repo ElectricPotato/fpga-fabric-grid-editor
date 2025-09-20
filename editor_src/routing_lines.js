@@ -14,11 +14,11 @@ export function makeLinesSVG(connectionArr, southEdge = false, eastEdge = false)
     let connY = 10; //how much the connections should be offset from the bottom edge of the cell to the centre
     let connX = 30; //how much the connections should be offset from the side edge of the cell to the centre
     //coordinates of the inputs and outputs to each cell
-    let cell_in_positions = [[100 - connX, 100 - connY], [100 - connY, connX], [connX, connY], [connY, 100 - connX]];
-    let cell_out_positions = [[connX, 100 - connY], [100 - connY, 100 - connX], [100 - connX, connY], [connY, connX]];
+    let cell_in_positions = [[100 - connX, connY], [100 - connY, 100 - connX], [connX, 100 - connY], [connY, connX]];
+    let cell_out_positions = [[connX, connY], [100 - connY, connX], [100 - connX, 100 - connY], [connY, 100 - connX]];
 
-    let neighbour_cell_out_positions = [[100 - connX, 100 + connY], [100 + connY, connX], [connX, -connY], [-connY, 100 - connX]];
-    let neighbour_cell_in_positions = [[connX, 100 + connY], [100 + connY, 100 - connX], [100 - connX, -connY], [-connY, connX]];
+    let neighbour_cell_out_positions = [[100 - connX, -connY], [100 + connY, 100 - connX], [connX, 100 + connY], [-connY, connX]];
+    let neighbour_cell_in_positions = [[connX, -connY], [100 + connY, connX], [100 - connX, 100 + connY], [-connY, 100 - connX]];
     
 
     let svg_contents = '';
