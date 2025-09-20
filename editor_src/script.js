@@ -2,11 +2,13 @@ import {makeLinesSVG} from "./routing_lines.js";
 
 // UI
 const container  = document.querySelector(".container");
+/*
 const sizeEle  = document.querySelector(".size");
 const color  = document.querySelector(".color");
 const resetBtn  = document.querySelector(".button");
+*/
 
-let size = sizeEle.value;
+let size = 20; //sizeEle.value;
 let draw = false;
 
 
@@ -87,7 +89,8 @@ resetGrid();
 
 function onMouseOver(div) {
     if(!draw) return;
-    div.style.backgroundColor = color.value;
+    //div.style.backgroundColor = color.value;
+    div.style.backgroundColor = '#ffa500';
 
     let currentGrid = gridIdToCoord(div.id.slice(1)); //trim the first character of the box's id. b123 -> 123
     if(currentGrid[0] == prevGrid[0] && currentGrid[1] == prevGrid[1]) return;
@@ -116,7 +119,8 @@ function onMouseOver(div) {
 }
 
 function onMouseDown(div) {
-    div.style.backgroundColor = color.value;
+    //div.style.backgroundColor = color.value;
+    div.style.backgroundColor = '#ffa500';
 
     prevPrevGrid = null;
     prevGrid = gridIdToCoord(div.id.slice(1));
@@ -130,9 +134,11 @@ window.addEventListener("mouseup", function() {
     draw = false;
 });
 
-resetBtn.addEventListener("click", resetGrid);
+//resetBtn.addEventListener("click", resetGrid);
 
+/*
 sizeEle.addEventListener("keyup", function () {
     size = sizeEle.value;
     resetGrid();
 });
+*/
