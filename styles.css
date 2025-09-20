@@ -43,8 +43,8 @@ body {
     width: 1000px;
     height: 1000px;
     display: grid;
-    grid-template-columns: repeat(var(--size), 1fr);
-    grid-template-rows: repeat(var(--size), 1fr);
+    grid-template-columns: repeat(var(--size), 0fr);
+    grid-template-rows: repeat(var(--size), 0fr);
     /*gap: 3px;
     padding: 3px;*/
 }
