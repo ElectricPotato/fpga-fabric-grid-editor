@@ -31,9 +31,7 @@ function resetGrid() {
                 [0,0,0,0]
             ];
 
-            div.innerHTML = makeLinesSVG(connectionArr, false, false);
-            //div.innerHTML = makeLinesSVG(connectionArr, y == size - 1, x == size - 1);
-            //console.log(x,y,y == size - 1, x == size - 1)
+            div.innerHTML = makeLinesSVG(connectionArr, y == size - 1, x == size - 1);
 
             container.appendChild(div);
         }
