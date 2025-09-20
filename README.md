@@ -21,8 +21,14 @@ The architecture is not very efficient, but very simple to understand, which in 
 
  - The connections at the edge of the fabric can be used for Block RAM or IO.
 
+### Planned features
+Currently the editor can only use the grid cells for passing signals around.
+To be added:
+ - A way to enter a boolean equation for each LUT
+ - Importing/Exporting files
+ - an RTL implementation of the FPGA
+ - Generation of a bitstream for the RTL implementation
 
 
-
-
+#### credit
 The Grid editor is based on ["Build a Pixel art maker with JavaScript" by channel "xplodivity"](https://www.youtube.com/watch?v=AoyGZ6KmxXM)
