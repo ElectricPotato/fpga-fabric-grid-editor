@@ -9,7 +9,9 @@ let draw = false;
 let prevGrid = null;
 let prevPrevGrid = null;
 
-function addGrid() {
+function resetGrid() {
+    container.innerHTML = "";
+
     container.style.setProperty("--size", size);
     for(let i=0;i<size*size;i++){
         const div = document.createElement("div");
@@ -23,7 +25,7 @@ function addGrid() {
     }
 }
 
-addGrid();
+resetGrid();
 
 function gridIdToCoord(id) {
     return [Math.floor(id/size), id%size];
@@ -58,14 +60,9 @@ window.addEventListener("mouseup", function() {
     draw = false;
 });
 
-function reset() {
-    container.innerHTML = "";
-    addGrid();
-}
-
-resetBtn.addEventListener("click", reset);
+resetBtn.addEventListener("click", resetGrid);
 
 sizeEle.addEventListener("keyup", function () {
     size = sizeEle.value;
-    reset();
+    resetGrid();
 });
